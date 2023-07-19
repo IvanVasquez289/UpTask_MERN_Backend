@@ -25,20 +25,30 @@ const autenticar = async (req,res) => {
     const {email,password} = req.body
 
     // Comprobar si el usuario exisre
-    const existeUsuario = await Usuario.findOne({email}) 
-    if(!existeUsuario){
+    const usuario = await Usuario.findOne({email}) 
+    if(!usuario){
         const error = new Error('El Usuario no existe')
         return res.status(404).json({msj:error.message})
     }
     
     // Comprobar si el usuario esta confirmado
-    if(!existeUsuario.confirmado){
+    if(!usuario.confirmado){
         const error = new Error('Tu cuenta no ha sido confirmada')
-        return res.status(404).json({msj:error.message})
+        return res.status(403).json({msj:error.message})
     }
+    // usuario.saludar()
 
     // Comprobar su password
-
+    if(await usuario.comprobarPassword(password)){
+        return res.json({
+            _id: usuario._id,
+            nombre: usuario.nombre,
+            email: usuario.email,
+        })
+    }else{
+        const error = new Error('El Password es Incorrecto')
+        return res.status(403).json({msj:error.message})
+    }
     res.json({msj:'autenticando...'})
 }
 
