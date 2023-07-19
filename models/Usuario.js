@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from 'bcrypt'
+// import generarId from "../helpers/generarId.js";
 const usuarioSchema = mongoose.Schema(
     {
         nombre: {
@@ -36,6 +37,7 @@ usuarioSchema.pre('save', async function(next){
         next()
     }
     const salt = await bcrypt.genSalt(10);
+    // this.token = generarId()
     this.password = await bcrypt.hash(this.password,salt)
 
 })
