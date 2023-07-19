@@ -21,6 +21,11 @@ const registrar = async (req,res) => {
     
 }
 
+const autenticar = (req,res) => {
+    res.json({msj:'autenticando...'})
+}
+
 export {
-    registrar
+    registrar,
+    autenticar
 }
