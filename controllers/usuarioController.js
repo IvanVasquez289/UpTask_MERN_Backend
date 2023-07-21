@@ -90,9 +90,22 @@ const olviderPassword = async (req,res) => {
     }
 }
 
+const comprobarToken = async (req,res) => {
+    const {token} = req.params
+    const tokenValido = await Usuario.findOne({token})
+
+    if(tokenValido){
+        res.json({msj:'Mostrando formulario para definir nuevo password'})
+    }else{
+        const error = new Error('Token no Valido')
+        return res.status(403).json({msj:error.message})
+    }
+}
+
 export {
     registrar,
     autenticar,
     confirmar,
-    olviderPassword
+    olviderPassword,
+    comprobarToken
 }
