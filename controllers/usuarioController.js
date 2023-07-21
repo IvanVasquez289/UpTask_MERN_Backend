@@ -102,10 +102,30 @@ const comprobarToken = async (req,res) => {
     }
 }
 
+const nuevoPassword = async (req,res) => {
+    const {token} = req.params;
+    const {password} = req.body;
+
+    const usuario = await Usuario.findOne({token})
+    if(usuario){
+        usuario.password = password;
+        usuario.token = '';
+        try {
+            await usuario.save()
+            res.json({msj:'La contraseña se ha cambiado'})  
+        } catch (error) {
+            console.log(error)
+        }        
+    }else{
+        const error = new Error('Token no Valido')
+        return res.status(403).json({msj:error.message})
+    }
+}
 export {
     registrar,
     autenticar,
     confirmar,
     olviderPassword,
-    comprobarToken
+    comprobarToken,
+    nuevoPassword
 }
