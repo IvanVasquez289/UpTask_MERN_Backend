@@ -121,11 +121,16 @@ const nuevoPassword = async (req,res) => {
         return res.status(403).json({msj:error.message})
     }
 }
+
+const perfil = () => {
+    console.log('desde perfil')
+}
 export {
     registrar,
     autenticar,
     confirmar,
     olviderPassword,
     comprobarToken,
-    nuevoPassword
+    nuevoPassword,
+    perfil
 }
