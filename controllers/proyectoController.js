@@ -1,3 +1,4 @@
+import mongoose from 'mongoose'
 import Proyecto from '../models/Proyecto.js'
 const  obtenerProyectos = async (req,res) => {  
     const proyectos = await Proyecto.find().where('creador').equals(req.usuario._id)
@@ -16,6 +17,27 @@ const nuevoProyecto = async (req,res) => {
 }
 
 const  obtenerProyecto = async (req,res) => {
+    const {id} = req.params
+    const valid = mongoose.Types.ObjectId.isValid(id)
+
+    if(!valid){
+        const error = new Error('ID INVALIDO PARA MONGO')
+        return res.status(404).json({msj: error.message})
+    }
+
+    const proyecto = await Proyecto.findById(id)
+    if(!proyecto){
+        const error = new Error('EL PROYECTO NO EXISTE')
+        return res.status(404).json({msj: error.message})
+    }
+
+    if(req.usuario._id.toString() !== proyecto.creador.toString()){
+        const error = new Error('EL PROYECTO NO TE PERTENECE')
+        return res.status(401).json({msj: error.message})
+    }   
+
+    res.json(proyecto)
+    
 }
 
 const  editarProyecto = async (req,res) => {

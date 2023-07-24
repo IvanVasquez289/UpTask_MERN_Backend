@@ -13,8 +13,8 @@ import {
 
 const router = express.Router()
 
-router.get('/',checkAuth,obtenerProyectos)
-router.post('/',checkAuth,nuevoProyecto)
+// router.get('/',checkAuth,obtenerProyectos)
+// router.post('/',checkAuth,nuevoProyecto)
 
 router
     .route('/')
