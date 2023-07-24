@@ -11,7 +11,7 @@ const checkAuth = async (req,res,next) => {
             const decoded = jwt.verify(token,process.env.JWT_SECRET)
             // A nuestro request lo creamos una variable que solo existira durante esa solicitud.
             req.usuario = await Usuario.findById(decoded.id).select('_id nombre email')
-            next()
+            return next()
         } catch (error) {
             return res.status(404).json({msj:'Hubo un error'})
         }
