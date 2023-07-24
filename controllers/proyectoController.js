@@ -18,47 +18,14 @@ const nuevoProyecto = async (req,res) => {
 
 const  obtenerProyecto = async (req,res) => {
     const {id} = req.params
-    const valid = mongoose.Types.ObjectId.isValid(id)
-
-    if(!valid){
-        const error = new Error('ID INVALIDO PARA MONGO')
-        return res.status(404).json({msj: error.message})
-    }
-
     const proyecto = await Proyecto.findById(id)
-    if(!proyecto){
-        const error = new Error('EL PROYECTO NO EXISTE')
-        return res.status(404).json({msj: error.message})
-    }
-
-    if(req.usuario._id.toString() !== proyecto.creador.toString()){
-        const error = new Error('EL PROYECTO NO TE PERTENECE')
-        return res.status(401).json({msj: error.message})
-    }   
-
     res.json(proyecto)
     
 }
 
 const  editarProyecto = async (req,res) => {
     const {id} = req.params
-    const valid = mongoose.Types.ObjectId.isValid(id)
-
-    if(!valid){
-        const error = new Error('ID INVALIDO PARA MONGO')
-        return res.status(404).json({msj: error.message})
-    }
-
     const proyecto = await Proyecto.findById(id)
-    if(!proyecto){
-        const error = new Error('EL PROYECTO NO EXISTE')
-        return res.status(404).json({msj: error.message})
-    }
-
-    if(req.usuario._id.toString() !== proyecto.creador.toString()){
-        const error = new Error('EL PROYECTO NO TE PERTENECE')
-        return res.status(401).json({msj: error.message})
-    }   
 
     // proyecto.nombre = req.body.nombre || proyecto.nombre
     const propsToUpdate = Object.keys(req.body)
@@ -83,6 +50,16 @@ const  editarProyecto = async (req,res) => {
 }
 
 const  eliminarProyecto = async (req,res) => {
+    const {id} = req.params
+    const proyecto = await Proyecto.findById(id)
+
+    try {
+        await proyecto.deleteOne()
+        res.json({msj: 'PROYECTO ELMININADO'})
+    } catch (error) {
+        console.log(error)
+    }
+ 
 }
 
 const  agregarColaborador = async (req,res) => {

@@ -1,5 +1,6 @@
 import express from 'express'
 import checkAuth from '../middlewares/checkAuth.js'
+import checkCreador from '../middlewares/checkCreador.js'
 import {
     obtenerProyectos,
     nuevoProyecto,
@@ -23,9 +24,9 @@ router
 
 router
     .route('/:id')
-    .get(checkAuth,obtenerProyecto)
-    .put(checkAuth,editarProyecto)
-    .delete(checkAuth,eliminarProyecto)
+    .get(checkAuth,checkCreador,obtenerProyecto)
+    .put(checkAuth,checkCreador,editarProyecto)
+    .delete(checkAuth,checkCreador,eliminarProyecto)
 
 router.get('/tareas/:id',checkAuth,obtenerTareas)
 
