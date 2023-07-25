@@ -9,7 +9,6 @@ import {
     eliminarProyecto,
     agregarColaborador,
     eliminarColaborador,
-    obtenerTareas
 } from '../controllers/proyectoController.js'
 
 const router = express.Router()
@@ -28,7 +27,6 @@ router
     .put(checkAuth,checkCreador,editarProyecto)
     .delete(checkAuth,checkCreador,eliminarProyecto)
 
-router.get('/tareas/:id',checkAuth,obtenerTareas)
 
 router.put('/agregar-colaborador/:id',checkAuth,agregarColaborador)
 router.put('/eliminar-colaborador/:id',checkAuth,eliminarColaborador)
