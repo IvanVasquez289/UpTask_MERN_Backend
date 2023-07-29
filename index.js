@@ -15,7 +15,6 @@ conectarDB()
 const whitelist = [process.env.FRONTEND_URL]
 const corsOptions = {
     origin: function(origin,callback){
-        console.log(origin)
         if(whitelist.includes(origin)){
             // Puede consultar la API
             callback(null, true)
