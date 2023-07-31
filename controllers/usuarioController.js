@@ -87,6 +87,12 @@ const olviderPassword = async (req,res) => {
         return res.status(404).json({msj:error.message})
     }
 
+    // Comprobar si el usuario esta confirmado
+    if(!usuario.confirmado){
+        const error = new Error('No puedes cambiar el password sin haber confirmado primero tu cuenta')
+        return res.status(403).json({msj:error.message})
+    }
+
     try {
         usuario.token = generarId()
         await usuario.save()
