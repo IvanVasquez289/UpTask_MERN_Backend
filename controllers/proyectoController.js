@@ -21,11 +21,8 @@ const  obtenerProyecto = async (req,res) => {
     const {id} = req.params
     const proyecto = await Proyecto.findById(id)
 
-    const tareas = await Tarea.find().where('proyecto').equals(proyecto._id)
-    res.json({
-        proyecto,
-        tareas
-    })
+    // const tareas = await Tarea.find().where('proyecto').equals(proyecto._id)
+    res.json(proyecto)
     
 }
 
