@@ -15,9 +15,10 @@ const checkCreador = async (req,res,next) => {
         return res.status(404).json({msj: error.message})
     }
 
-    if(req.usuario._id.toString() !== proyecto.creador.toString()){
-        const error = new Error('EL PROYECTO NO TE PERTENECE')
-        return res.status(401).json({msj: error.message})
+    if(req.usuario._id.toString() !== proyecto.creador.toString() && !proyecto.
+        colaboradores.some(colaborador => colaborador._id.toString() === req.usuario._id.toString())){
+            const error = new Error('EL PROYECTO NO TE PERTENECE')
+            return res.status(401).json({msj: error.message})
     }
     next() 
 }
