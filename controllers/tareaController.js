@@ -72,7 +72,30 @@ const eliminarTarea = async (req,res) => {
 }
 
 const cambiarEstado = async (req,res) => {
+    const {id} = req.params
+    const valid = mongoose.Types.ObjectId.isValid(id)
 
+    if(!valid){
+        const error = new Error('ID INVALIDO PARA MONGO')
+        return res.status(404).json({msj: error.message})
+    }
+
+    const tarea = await Tarea.findById(id).populate('proyecto')
+
+    if(!tarea){
+        const error = new Error('LA TAREA NO EXISTE')
+        return res.status(404).json({msj: error.message})
+    }
+    
+    // La persona que quiere marcar la tarea debe ser el creador o colaborador
+    if(tarea.proyecto.creador.toString() !== req.usuario._id.toString() && !tarea.proyecto.colaboradores.some(item => item._id.toString() === req.usuario._id.toString())){
+        const error = new Error('ACCION NO VALIDA')
+        return res.status(403).json({msj: error.message})
+    }
+
+    tarea.estado = !tarea.estado
+    await tarea.save()
+    res.json(tarea)
 }
 
 export {
