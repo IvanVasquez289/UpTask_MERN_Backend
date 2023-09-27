@@ -98,8 +98,12 @@ const cambiarEstado = async (req,res) => {
     }
 
     tarea.estado = !tarea.estado
+    tarea.completado = req.usuario._id
     await tarea.save()
-    res.json(tarea)
+
+    const tareaAlmacenada = await Tarea.findById(id).populate('proyecto').populate('completado','nombre')
+
+    res.json(tareaAlmacenada)
 }
 
 export {
