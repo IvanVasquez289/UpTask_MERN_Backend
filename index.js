@@ -59,4 +59,8 @@ io.on('connection',(socket) => {
         // Emitir este evento a los usuarios que se encuentren en el proyecto de esta tarea 
         socket.to(tarea.proyecto).emit('tarea agregada', tarea)
     })
+
+    socket.on('eliminar tarea', tarea => {
+        socket.to(tarea.proyecto).emit('tarea eliminada', tarea)
+    })
 })
