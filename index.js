@@ -67,4 +67,8 @@ io.on('connection',(socket) => {
     socket.on('editar tarea', tarea => {
         socket.to(tarea.proyecto).emit('tarea editada', tarea)
     })
+
+    socket.on('completar tarea', tarea => {
+        socket.to(tarea.proyecto._id).emit('tarea completada', tarea)
+    })
 })
